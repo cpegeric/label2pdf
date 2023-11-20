@@ -1,10 +1,10 @@
-### Introduction
+# Introduction
 
 This project is to generate a pdf file from images which is similar to Avery label generator.
 All you have to do it define a label page settings and image information in JSON.
 
 
-# Page Settings
+## Page Settings
 
 Define your label paper format in JSON, say, page.json,
 
@@ -29,7 +29,7 @@ Define your label paper format in JSON, say, page.json,
 
 ```
 
-# Image Settings in JSON
+## Image Settings in JSON
 
 Define the images you want to print in JSON format (e.g. label.json).  Image path with empty string will be skipped and leave a blank space on the pdf.
 
@@ -47,7 +47,9 @@ Define the images you want to print in JSON format (e.g. label.json).  Image pat
 
 ```
 
-# Create the pdf file by running the command line ```label2pdf```
+## Create label file
+
+Create the pdf file by running the command line ```label2pdf```
 
 ```
 % label2pdf page.json label.json out.pdf
