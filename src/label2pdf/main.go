@@ -31,7 +31,7 @@ type Page struct {
 	Paper       Paper  `json:"paper,omitempty"`
 }
 
-type ImageInfo struct {
+type PdfInfo struct {
 	Model       string     `json:"model,omitempty"`
 	ImageType   string     `json:"image_type,omitempty"`
 	ImageWidth  float64    `json:"image_width,omitempty"`
@@ -62,7 +62,7 @@ func readPageSettings(file string) ([]Page, error) {
 	return pages, nil
 }
 
-func readImageInfo(file string) (*ImageInfo, error) {
+func readPdfInfo(file string) (*PdfInfo, error) {
 	jsonFile, err := os.Open(file)
 	if err != nil {
 		fmt.Println(err)
@@ -72,7 +72,7 @@ func readImageInfo(file string) (*ImageInfo, error) {
 	defer jsonFile.Close()
 	bytes, _ := ioutil.ReadAll(jsonFile)
 
-	var imageinfo ImageInfo
+	var imageinfo PdfInfo
 	err = json.Unmarshal(bytes, &imageinfo)
 	if err != nil {
 		fmt.Println("error:", err)
@@ -114,7 +114,7 @@ func checkSize(page *Page) bool {
 	return true
 }
 
-func createPdf(info *ImageInfo, currpage *Page, outfile string) error {
+func createPdf(info *PdfInfo, currpage *Page, outfile string) error {
 
 	page := *currpage
 	pdf := gofpdf.New(info.Orientation, page.Paper.Unit, page.Paper.Name, "")
@@ -208,14 +208,14 @@ func main() {
 	}
 	// fmt.Println(pages)
 
-	imageinfo, err := readImageInfo(labelfile)
+	pdfinfo, err := readPdfInfo(labelfile)
 	if err != nil {
 		fmt.Println("error:", err)
 		return
 	}
-	// fmt.Println(imageinfo)
+	// fmt.Println(pdfinfo)
 
-	p := findPage(pages, imageinfo.Model)
+	p := findPage(pages, pdfinfo.Model)
 	if p == nil {
 		fmt.Println("error:", "Invalid Model name. Please refer to page settings JSON")
 	}
@@ -226,7 +226,7 @@ func main() {
 		return
 	}
 
-	err = createPdf(imageinfo, p, outfile)
+	err = createPdf(pdfinfo, p, outfile)
 	if err != nil {
 		panic(err)
 	}
