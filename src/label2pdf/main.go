@@ -114,10 +114,26 @@ func checkSize(page *Page) bool {
 	return true
 }
 
-func createPdf(info *ImageInfo, page *Page, outfile string) error {
+func createPdf(info *ImageInfo, currpage *Page, outfile string) error {
 
+	page := *currpage
 	pdf := gofpdf.New(page.Paper.Orientation, page.Paper.Unit, page.Paper.Name, "")
 	pdf.AddPage()
+
+	if page.Paper.Orientation == "L" {
+		page.Paper.Left = currpage.Paper.Top
+		page.Paper.Right = currpage.Paper.Bottom
+		page.Paper.Top = currpage.Paper.Right
+		page.Paper.Bottom = currpage.Paper.Left
+		page.Paper.VSpace = currpage.Paper.HSpace
+		page.Paper.HSpace = currpage.Paper.VSpace
+		page.Paper.Columns = currpage.Paper.Rows
+		page.Paper.Rows = currpage.Paper.Columns
+		page.Paper.Width = currpage.Paper.Height
+		page.Paper.Height = currpage.Paper.Width
+		page.Paper.LabelWidth = currpage.Paper.LabelHeight
+		page.Paper.LabelHeight = currpage.Paper.LabelWidth
+	}
 
 	x := page.Paper.Left
 	y := page.Paper.Top
