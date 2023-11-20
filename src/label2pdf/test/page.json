@@ -2,21 +2,14 @@
 {
 	"model" : "EU30147WJ",
 	"description" : "onlinelabels.com EU30147WJ 70mm x 50mm",
-	"paper" : { "name" : "A4", "unit" : "mm", "width": 210, "height": 297, "orientation": "P", 
+	"paper" : { "name" : "A4", "unit" : "mm", "width": 210, "height": 297,
   		    "top": 14, "bottom": 13, "left": 33, "right": 32, "columns" : 2, "rows" : 5,
 		    "label_width": 70, "label_height": 50, "hspace": 5, "vspace": 5}
 },
 {
-        "model" : "EU30147WJ_LANDSCAPE",
-        "description" : "onlinelabels.com EU30147WJ 70mm x 50mm",
-        "paper" : { "name" : "A4", "unit" : "mm", "width": 210, "height": 297, "orientation": "L",
-                    "top": 14, "bottom": 13, "left": 33, "right": 32, "columns" : 2, "rows" : 5,
-                    "label_width": 70, "label_height": 50, "hspace": 5, "vspace": 5}
-},
-{
         "model" : "TAOBAO70x50",
         "description" : "TAOBAO 70mm x 50.8mm",
-        "paper" : { "name" : "A4", "unit" : "mm", "width": 210, "height": 297, "orientation": "P",
+        "paper" : { "name" : "A4", "unit" : "mm", "width": 210, "height": 297,
         	    "columns" : 3, "rows" : 5, "top": 19.5, "bottom": 24.5, "left": 0, "right": 0,
 		    "label_width": 70, "label_height": 50.8, "hspace": 0, "vspace": 0}
 }

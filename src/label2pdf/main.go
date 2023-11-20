@@ -13,7 +13,6 @@ type Paper struct {
 	Unit        string  `json:"unit,omitempty"`
 	Width       float64 `json:"width,omitempty"`
 	Height      float64 `json:"height,omitempty"`
-	Orientation string  `json:"orientation,omitempty"`
 	Top         float64 `json:"top,omitempty"`
 	Bottom      float64 `json:"bottom,omitempty"`
 	Left        float64 `json:"left,omitempty"`
@@ -39,6 +38,7 @@ type ImageInfo struct {
 	ImageHeight float64    `json:"image_height,omitempty"`
 	Images      [][]string `json:"images,omitempty"`
 	Repeat      bool       `json:"repeat,omitempty"`
+	Orientation string     `json:"orientation,omitempty"`
 }
 
 func readPageSettings(file string) ([]Page, error) {
@@ -117,10 +117,10 @@ func checkSize(page *Page) bool {
 func createPdf(info *ImageInfo, currpage *Page, outfile string) error {
 
 	page := *currpage
-	pdf := gofpdf.New(page.Paper.Orientation, page.Paper.Unit, page.Paper.Name, "")
+	pdf := gofpdf.New(info.Orientation, page.Paper.Unit, page.Paper.Name, "")
 	pdf.AddPage()
 
-	if page.Paper.Orientation == "L" {
+	if info.Orientation == "L" {
 		page.Paper.Left = currpage.Paper.Top
 		page.Paper.Right = currpage.Paper.Bottom
 		page.Paper.Top = currpage.Paper.Right

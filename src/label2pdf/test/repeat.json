@@ -1,8 +1,9 @@
 {
-  "model" : "EU30147WJ_LANDSCAPE",
+  "model" : "EU30147WJ",
   "image_type": "PNG",
   "image_width": 50,
   "image_height": 70,
   "repeat" : true,
+  "orientation" : "L",
   "images": [["test/candle-box.png"]]
 }
