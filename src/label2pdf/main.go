@@ -34,7 +34,9 @@ type Page struct {
 
 type ImageInfo struct {
 	Model     string     `json:"model,omitempty"`
-	ImageType string     `json:image_type,omitempty"`
+	ImageType string     `json:"image_type,omitempty"`
+	ImageWidth float64   `json:"image_width,omitempty"`
+	ImageHeight float64   `json:"image_height,omitempty"`
 	Images    [][]string `json:"images,omitempty"`
 }
 
@@ -131,7 +133,7 @@ func createPdf(info *ImageInfo, page *Page, outfile string) error {
 
 			if img != "" {
 				// fmt.Printf("I file=%s, x=%d, y=%d\n", img, x,y)
-				pdf.ImageOptions(img, x, y, page.Paper.LabelWidth, page.Paper.LabelHeight, false,
+				pdf.ImageOptions(img, x, y, info.ImageWidth, info.ImageHeight, false,
 					gofpdf.ImageOptions{ImageType: info.ImageType, ReadDpi: true}, 0, "")
 			}
 

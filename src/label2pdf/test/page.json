@@ -8,9 +8,9 @@
 },
 {
         "model" : "TAOBAO70x50",
-        "description" : "TAOBAO 70mm x 50mm",
+        "description" : "TAOBAO 70mm x 50.8mm",
         "paper" : { "name" : "A4", "unit" : "mm", "width": 210, "height": 297, "orientation": "P",
-        	    "columns" : 3, "rows" : 5, "top": 24, "bottom": 20, "left": 0, "right": 0,
-		    "label_width": 70, "label_height": 50, "hspace": 1, "vspace": 1}
+        	    "columns" : 3, "rows" : 5, "top": 19.5, "bottom": 24.5, "left": 0, "right": 0,
+		    "label_width": 70, "label_height": 50.8, "hspace": 0, "vspace": 0}
 }
 ]
