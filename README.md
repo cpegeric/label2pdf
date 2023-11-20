@@ -31,7 +31,7 @@ Define your label paper format in JSON, say, page.json,
 
 ## Image Settings in JSON
 
-Define the images you want to print in JSON format (e.g. label.json).  Image path with empty string will be skipped and leave a blank space on the pdf.
+Define the images you want to print in JSON format (e.g. label.json).  Image path with empty string will be skipped and leave a blank space on the pdf. The model name must be matched to one of the model defined in page.json.
 
 ```
 {
