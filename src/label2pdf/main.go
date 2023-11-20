@@ -152,14 +152,26 @@ func createPdf(info *ImageInfo, page *Page, outfile string) error {
 
 func main() {
 
-	pages, err := readPageSettings("page.json")
+	args := os.Args
+
+	if len(args) != 4 {
+		fmt.Println("usage: label2pdf page.json label.json outfile.pdf")
+		return
+	}
+
+	pagefile := args[1]
+	labelfile := args[2]
+	outfile := args[3]
+	
+	
+	pages, err := readPageSettings(pagefile)
 	if err != nil {
 		fmt.Println("error:", err)
 		return
 	}
 	// fmt.Println(pages)
 
-	imageinfo, err := readImageInfo("label.json")
+	imageinfo, err := readImageInfo(labelfile)
 	if err != nil {
 		fmt.Println("error:", err)
 		return
@@ -177,9 +189,10 @@ func main() {
 		return
 	}
 
-	err = createPdf(imageinfo, p, "outfile.pdf")
+	err = createPdf(imageinfo, p, outfile)
 	if err != nil {
 		panic(err)
 	}
 
+	fmt.Printf("%s pdf file is created\n", outfile)
 }
