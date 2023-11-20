@@ -33,11 +33,12 @@ type Page struct {
 }
 
 type ImageInfo struct {
-	Model     string     `json:"model,omitempty"`
-	ImageType string     `json:"image_type,omitempty"`
-	ImageWidth float64   `json:"image_width,omitempty"`
-	ImageHeight float64   `json:"image_height,omitempty"`
-	Images    [][]string `json:"images,omitempty"`
+	Model       string     `json:"model,omitempty"`
+	ImageType   string     `json:"image_type,omitempty"`
+	ImageWidth  float64    `json:"image_width,omitempty"`
+	ImageHeight float64    `json:"image_height,omitempty"`
+	Images      [][]string `json:"images,omitempty"`
+	Repeat      bool       `json:"repeat,omitempty"`
 }
 
 func readPageSettings(file string) ([]Page, error) {
@@ -121,27 +122,46 @@ func createPdf(info *ImageInfo, page *Page, outfile string) error {
 	x := page.Paper.Left
 	y := page.Paper.Top
 
-	for i, a := range info.Images {
-		if i >= page.Paper.Rows {
-			break
+	if info.Repeat {
+		// get the first image and repeat
+		img := info.Images[0][0]
+		for i := 0; i < page.Paper.Rows; i++ {
+
+			for j := 0; j < page.Paper.Columns; j++ {
+
+				pdf.ImageOptions(img, x, y, info.ImageWidth, info.ImageHeight, false,
+					gofpdf.ImageOptions{ImageType: info.ImageType, ReadDpi: true}, 0, "")
+
+				x += page.Paper.HSpace + page.Paper.LabelWidth
+			}
+			x = page.Paper.Left
+			y += page.Paper.LabelHeight + page.Paper.VSpace
 		}
 
-		for j, img := range a {
-			if j >= page.Paper.Columns {
+	} else {
+		for i, a := range info.Images {
+			if i >= page.Paper.Rows {
 				break
 			}
 
-			if img != "" {
-				// fmt.Printf("I file=%s, x=%d, y=%d\n", img, x,y)
-				pdf.ImageOptions(img, x, y, info.ImageWidth, info.ImageHeight, false,
-					gofpdf.ImageOptions{ImageType: info.ImageType, ReadDpi: true}, 0, "")
+			for j, img := range a {
+				if j >= page.Paper.Columns {
+					break
+				}
+
+				if img != "" {
+					// fmt.Printf("I file=%s, x=%d, y=%d\n", img, x,y)
+					pdf.ImageOptions(img, x, y, info.ImageWidth, info.ImageHeight, false,
+						gofpdf.ImageOptions{ImageType: info.ImageType, ReadDpi: true}, 0, "")
+				}
+
+				x += page.Paper.HSpace + page.Paper.LabelWidth
+
 			}
-
-			x += page.Paper.HSpace + page.Paper.LabelWidth
-
+			x = page.Paper.Left
+			y += page.Paper.LabelHeight + page.Paper.VSpace
 		}
-		x = page.Paper.Left
-		y += page.Paper.LabelHeight + page.Paper.VSpace
+
 	}
 
 	err := pdf.OutputFileAndClose(outfile)
@@ -164,8 +184,7 @@ func main() {
 	pagefile := args[1]
 	labelfile := args[2]
 	outfile := args[3]
-	
-	
+
 	pages, err := readPageSettings(pagefile)
 	if err != nil {
 		fmt.Println("error:", err)
