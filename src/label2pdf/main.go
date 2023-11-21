@@ -114,6 +114,12 @@ func checkSize(page *Page) bool {
 	return true
 }
 
+func adjustCenter(info *PdfInfo, lwidth float64, lheight float64) (deltax float64, deltay float64) {
+	deltax = (lwidth - info.ImageWidth) / 2
+	deltay = (lheight - info.ImageHeight) / 2
+	return deltax, deltay
+}
+
 func createPdf(info *PdfInfo, currpage *Page, outfile string) error {
 
 	page := *currpage
@@ -145,7 +151,10 @@ func createPdf(info *PdfInfo, currpage *Page, outfile string) error {
 
 			for j := 0; j < page.Paper.Columns; j++ {
 
-				pdf.ImageOptions(img, x, y, info.ImageWidth, info.ImageHeight, false,
+				deltax, deltay := adjustCenter(info, page.Paper.LabelWidth, page.Paper.LabelHeight)
+				newx := x + deltax
+				newy := y + deltay
+				pdf.ImageOptions(img, newx, newy, info.ImageWidth, info.ImageHeight, false,
 					gofpdf.ImageOptions{ImageType: info.ImageType, ReadDpi: true}, 0, "")
 
 				x += page.Paper.HSpace + page.Paper.LabelWidth
@@ -167,7 +176,10 @@ func createPdf(info *PdfInfo, currpage *Page, outfile string) error {
 
 				if img != "" {
 					// fmt.Printf("I file=%s, x=%d, y=%d\n", img, x,y)
-					pdf.ImageOptions(img, x, y, info.ImageWidth, info.ImageHeight, false,
+					deltax, deltay := adjustCenter(info, page.Paper.LabelWidth, page.Paper.LabelHeight)
+					newx := x + deltax
+					newy := y + deltay
+					pdf.ImageOptions(img, newx, newy, info.ImageWidth, info.ImageHeight, false,
 						gofpdf.ImageOptions{ImageType: info.ImageType, ReadDpi: true}, 0, "")
 				}
 
